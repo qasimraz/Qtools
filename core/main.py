@@ -1,6 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sp
+import scipy.stats
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+
 
 x = np.array([
     [
@@ -29,9 +34,35 @@ for i in range(x.__len__()):
         print "mean of w%d and x%d is %f" % (i, j, sp.mean(x[i][j]))
 
 ''' Part 1 b '''
+N = range(2, 11, 1)
+xl = [-6, -6]
+xu = [6, 6]
+res = 0.1
 
-for i in range(x.__len__()):
-        plt.scatter(x[i][0], x[i][1])
-        plt.show()
-        # print "variance of w%d is %f" % (i, sp.var(x[i]))
-        # print "mean of w%d is %f" % (i, sp.average(x[i]))
+
+
+def func(xl, xu, res):
+    arr = np.array([[0,0,0]])
+    for x0 in np.arange(xl[0], xu[0]+res, res):
+        for x1 in np.arange(xl[1], xu[1]+res, res):
+            v = 0
+            if xl[0] <= x0 <= xu[0] and xl[1] <= x1 <= xu[1]:
+                v = float(1.0/(abs(xu[0]-xl[0])*abs(xu[1]-xl[1])))
+            else:
+                print "WTF"
+            arr = np.append(arr, [[x0, x1, v]], axis=0)
+    return arr
+
+arr=func(xl,xu,res)
+
+X=np.arange(-6,6,0.1)
+Y=np.arange(-6,6,0.1)
+
+x = np.outer(np.linspace(-2, 2, 30), np.ones(30))
+y = x.copy()
+z = np.cos(x ** 2 + y ** 2)
+
+fig = plt.figure()
+ax = plt.axes(projection='3d')
+
+ax.plot_surface(x, y, z, cmap=plt.cm.jet, rstride=1, cstride=1, linewidth=0)
