@@ -1,11 +1,11 @@
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
-'''
-import matplotlib
-matplotlib.use('GTKAgg')'''
+from pylab import *
+# import matplotlib
+# matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
-x = np.array([
+data = np.array([
     [
         [0.42, -0.2, 1.3, 0.39, -1.6, -0.029, -0.23, 0.27, -1.9, 0.87],
         [-0.087, -3.3, -0.32, 0.71, -5.3, 0.89, 1.9, -0.3, 0.76, -1.0],
@@ -23,27 +23,38 @@ x = np.array([
     ]
 ],)
 
+# xl, xu = -3.3, -0.2
+res = .01
+x = y = np.arange(-6,6+res, res)
+X, Y = np.meshgrid(x, y)
 
-def foo(xl,xu):
+
+def yoo(xl, xu):
     p = 1.0/((xu-xl)**2)
+    # for x,y in zip(np.ravel(X), np.ravel(Y)): print(x,y,xl<=x<=xu and xl<=y<=xu)
+    zs = np.array([[0, p][xl <= x <= xu and xl <= y <= xu] for x, y in zip(np.ravel(X), np.ravel(Y))])
+    return zs
+# zs=zs/((xu-xl)/res)0
+
+
+def plot(zs):
+    zs = zs/sum(zs)
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    res = .01
-    x = y = np.arange(-6,6+res, res)
-    X, Y = np.meshgrid(x, y)
-    '''for x,y in zip(np.ravel(X), np.ravel(Y)):
-        print(x,y,xl<=x<=xu and xl<=y<=xu)'''
-    zs = np.array([[0, p][xl <= x <= xu and xl <= y <= xu] for x, y in zip(np.ravel(X), np.ravel(Y))])
-    zs = zs/sum(zs)
-    # zs=zs/((xu-xl)/res)
     Z = zs.reshape(X.shape)
     print(sum(sum(Z)))
     # print(sum(zs),x,y,Z)
     # ax.plot_surface(X, Y, Z)
-    ax.plot_surface(X, Y, Z) # rstride=int((1/res)), cstride=int((1/res)))
+    ax.plot_surface(X, Y, Z, linewidth=0, cmap=cm.jet)  # , rstride=int((1/res)), cstride=int((1/res)))
     ax.set_xlabel('X Label')
     ax.set_ylabel('Y Label')
     ax.set_zlabel('Z Label')
-
     plt.show()
-foo(-3.3,-.2)
+    pass
+
+N=10
+a0=yoo(data[0][1][0],data[0][0][0])
+for i in range(2,N,1):
+    print i
+    a0=np.add(a0,yoo(data[0][1][i],data[0][0][i]))
+plot(a0)
