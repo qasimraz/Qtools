@@ -1,8 +1,6 @@
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 from pylab import *
-# import matplotlib
-# matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
 data = np.array([
@@ -23,18 +21,15 @@ data = np.array([
     ]
 ],)
 
-# xl, xu = -3.3, -0.2
 res = .01
-x = y = np.arange(-6,6+res, res)
+x = y = np.arange(-6, 6+res, res)
 X, Y = np.meshgrid(x, y)
 
 
 def yoo(xl, xu):
     p = 1.0/((xu-xl)**2)
-    # for x,y in zip(np.ravel(X), np.ravel(Y)): print(x,y,xl<=x<=xu and xl<=y<=xu)
     zs = np.array([[0, p][xl <= x <= xu and xl <= y <= xu] for x, y in zip(np.ravel(X), np.ravel(Y))])
     return zs
-# zs=zs/((xu-xl)/res)0
 
 
 def plot(zs):
@@ -43,18 +38,16 @@ def plot(zs):
     ax = fig.add_subplot(111, projection='3d')
     Z = zs.reshape(X.shape)
     print(sum(sum(Z)))
-    # print(sum(zs),x,y,Z)
-    # ax.plot_surface(X, Y, Z)
-    ax.plot_surface(X, Y, Z, linewidth=0, cmap=cm.jet)  # , rstride=int((1/res)), cstride=int((1/res)))
+    ax.plot_surface(X, Y, Z, linewidth=0, cmap=cm.jet)
     ax.set_xlabel('X Label')
     ax.set_ylabel('Y Label')
     ax.set_zlabel('Z Label')
     plt.show()
     pass
 
-N=10
-a0=yoo(data[0][1][0],data[0][0][0])
-for i in range(2,N,1):
+N = 10
+a0 = yoo(data[0][1][0], data[0][0][0])
+for i in range(2, N, 1):
     print i
-    a0=np.add(a0,yoo(data[0][1][i],data[0][0][i]))
+    a0 = np.add(a0, yoo(data[0][1][i], data[0][0][i]))
 plot(a0)

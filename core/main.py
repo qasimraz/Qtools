@@ -1,11 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.stats import norm
 import scipy as sp
-import scipy.stats
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib import cm
-from matplotlib.ticker import LinearLocator, FormatStrFormatter
-
 
 x = np.array([
     [
@@ -25,65 +21,28 @@ x = np.array([
     ]
 ],)
 
-''' Part 1 a '''
+''' Visualize '''
+plt.scatter(x[0][0], x[0][1],color='b', alpha=0.5)
+plt.scatter(x[0][0], x[0][2],color='r', alpha=0.5)
+plt.scatter(x[0][1], x[0][2],color='g', alpha=0.5)
+plt.show()
 
-for i in range(x.__len__()):
-    for j in range(x[i].__len__()):
-        # mean = np.sum(x[i][j]) / len(x[i][j])
-        print "variance of w%d and x%d is %f" % (i, j, sp.var(x[i][j]))
-        print "mean of w%d and x%d is %f" % (i, j, sp.mean(x[i][j]))
+for j in range(x[0].__len__()):
+    mean = sp.mean(x[0][j])
+    var = sp.var(x[0][j])
+    print "variance of w%d and x%d is %f" % (i, j, var)
+    print "mean of w%d and x%d is %f" % (i, j, mean)
+    x_axis = np.arange(-12, 12, 0.001)
+    plt.plot(x_axis, norm.pdf(x_axis,mean,var), label='set: '+str(j)+' mean ='+ str(mean) + ' var = '+str(var))
+plt.legend()
+plt.title('Part 1')
+plt.show()
 
-''' Part 1 b '''
-# N = range(2, 11, 1)
-
-# res = 0.1
-#
-#
-#
-# def func(xl, xu, res):
-#     arr = np.array([[0,0,0]])
-#     for x0 in np.arange(xl[0], xu[0]+res, res):
-#         for x1 in np.arange(xl[1], xu[1]+res, res):
-#             v = 0
-#             if xl[0] <= x0 <= xu[0] and xl[1] <= x1 <= xu[1]:
-#                 v = float(1.0/(abs(xu[0]-xl[0])*abs(xu[1]-xl[1])))
-#             else:
-#                 print "WTF"
-#             arr = np.append(arr, [[x0, x1, v]], axis=0)
-#     return arr
-#
-# arr=func(xl,xu,res)
-#
-# X=np.arange(-6,6,0.1)
-# Y=np.arange(-6,6,0.1)
-#
-# x = np.outer(np.linspace(-2, 2, 30), np.ones(30))
-# y = x.copy()
-# z = np.cos(x ** 2 + y ** 2)
-#
-# fig = plt.figure()
-# ax = plt.axes(projection='3d')
-#
-# ax.plot_surface(x, y, z, cmap=plt.cm.jet, rstride=1, cstride=1, linewidth=0)
+print "variance x of w1 and w2 is %f and %f" % (sp.var(x[0][0]), sp.var(x[1][0]))
+print "variance y of w1 and w2 is %f and %f" % (sp.var(x[0][1]), sp.var(x[1][1]))
+print "variance z of w1 and w2 is %f and %f" % (sp.var(x[0][2]), sp.var(x[1][2]))
+print "mean x of w1 and w2 is %f and %f" % (sp.mean(x[0][0]), sp.mean(x[1][0]))
+print "mean y of w1 and w2 is %f and %f" % (sp.mean(x[0][1]), sp.mean(x[1][1]))
+print "mean z of w1 and w2 is %f and %f" % (sp.mean(x[0][2]), sp.mean(x[1][2]))
 
 
-x0 = np.outer(np.linspace(-6, 6, 100), np.ones(100))
-x1 = x0.copy().T
-
-
-def func(xl, xu):
-    x0 = np.outer(np.linspace(-6, 6, 100), np.ones(100))
-    x1 = x0.copy()
-    xa = min(xl, xu)
-    xu = max(xl, xu)
-    xl = xa
-    z = np.outer(np.linspace(-6, 6, 100), np.zeros(100))
-    p = 1.0/((xu-xl)**2)
-
-    return z
-z = func(-6, 6)
-
-fig = plt.figure()
-ax = plt.axes(projection='3d')
-
-ax.plot_surface(x0, x1, z, cmap=plt.cm.jet, rstride=1, cstride=1, linewidth=0)
